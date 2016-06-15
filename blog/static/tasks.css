@@ -1,0 +1,25 @@
+
+
+.task-small{
+    color: gray;
+    font-size: 10pt;
+}
+
+.taskbody{
+    font-size: 15pt;
+}
+
+.follow-button {
+    margin-bottom: 15px;
+
+}
+
+.unlike {
+    font-size: 10pt;
+    color: #ff8888;
+}
+
+#alsolike {
+    display: none;
+    
+}

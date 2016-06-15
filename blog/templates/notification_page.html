@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %} 通知页面 {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+	{% if session.user_id and session.user_id != user_id%}
+	<div class="col-md-3"></div>
+	{%endif %}
+        <div class="col-md-6">
+
+<h1>全站通知</h1>
+
+<div class="task">
+{% for notification in notifications %}
+
+	{% if notification[4] > present_datetime %}
+
+<div class="panel panel-default task">
+  <div class="panel-heading">
+    <span class="panel-title">通知：{{notification[1]}}</span>
+
+    <span class="pull-right task-small">
+        <div>发布时间：{{notification[3]}}</div>
+        <div>截止时间：{{notification[4]}}</div>
+    </span>
+
+  </div>
+  {% endif %}
+  <div class="panel-body">
+    <p class="taskbody">
+
+    {{ render_post_content(notification[2]) | safe }}
+
+    </p>
+  </div>
+</div>
+
+{% endfor %}
+
+
+
+    
+    </div>
+
+    <div class="col-md-2"></div>
+ </div>
+
+ {% endblock %}
+

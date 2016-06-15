@@ -1,0 +1,112 @@
+
+{% extends "layout.html" %}
+
+{% block title %} 主页 {% endblock %}
+
+{% block content %}
+
+
+<script language="javascript">
+function replyTo(str, target_user_id) {
+document.getElementById('comment-content').value = "回复"+str+":";
+document.getElementById('target_user_id').value = target_user_id;
+$("html, body").animate({ scrollTop: 0 }, 300);
+$("#comment-content").focus()
+}
+</script>
+
+<div class="row">
+<div class="col-md-3"> </div>
+
+
+
+<div class="col-md-6"> 
+
+
+
+
+<div class="panel panel-primary task">
+  <div class="panel-heading">
+    <span class="panel-title"><a href="{{url_for('show_user', user_id=publisher[0])}}">{{publisher[1]}}</a> 求助: </span>
+
+    <span class="pull-right ">
+        <div>发布时间：{{task[7]}}</div>
+        <div>截止时间：{{task[4]}}</div>
+    </span>
+
+    </span>
+
+  </div>
+  <div class="panel-body">
+    <p class="taskbody"> {{ render_post_content(task[3]) | safe }} </p>
+
+
+
+{% if session.user_id%}
+    <span class="pull-right">
+
+        
+        <span class="task-small" id="{{task[0]}}">
+
+
+            {%if me_adopt %}
+
+            <a class="adopt" href="/adopt_task/{{task[0]}}" style="display:none"><span class="task-small">认领</span></a>
+        <a class="unadopt" href="/unadopt_task/{{task[0]}}"><span class="highlight">取消认领</span></a> </span>
+
+            {% else %}
+
+            <a class="adopt" href="/adopt_task/{{task[0]}}"><span class="task-small">认领</span></a>
+            <a class="unadopt" href="/unadopt_task/{{task[0]}}" style="display:none"><span class="highlight">取消认领</span></a> </span>
+
+            {% endif %}
+
+    </span>
+
+<script type="text/javascript">
+
+function toggle(task_id) {
+    var children = $("#" + task_id).children()
+    var c0 = children[0]
+    var c1 = children[1]
+    if ($(c0).css("display") == "none"){
+        $(c0).css("display", "inline")
+        $(c1).css("display", "none")
+    } else {
+        $(c0).css("display", "none")
+        $(c1).css("display", "inline")
+    }
+}
+
+</script>
+
+{% endif %}
+
+
+  </div>
+</div>
+
+<div id="alsoadopt" class="panel panel-default">
+  <div class="panel-heading"> <h3 class="panel-title">认领了这篇任务的用户: </h3> </div>
+  <div class="panel-body">
+    {% if adopter == None %}
+
+        <p>暂无人认领</p>
+
+    {% else %}
+
+        <a href="{{url_for('show_user', user_id=adopter[8])}}"><img src="{{adopter[20]}}" alt="" height=30 width=30 /></a>
+         
+    {%endif%}
+</div>
+</div>
+
+
+
+</div>
+
+<div class="col-md-3"> 
+</div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+
+
+{% extends "layout.html" %}
+
+{% block title %} 主页 {% endblock %}
+
+
+
+{% block content %}
+{% if session.user_id %}
+    <div class="row">
+		<div class="col-md-3"></div>
+        <div class="col-md-6">
+	 <h2><img src="{{user_portrait_url}}" alt="求真像" height=40 width=40 />你好,{{ user_name }}! </h2>
+
+    <h3>分享求助任务 <small>试试@人?</small></h3>
+
+    <form action="{{ url_for('add_task') }}" method="post" id = "text_form" class="form-horizontal">
+        <div class="form-group">
+          <div class="col-lg-12">
+            任务类型：
+            <select name = "type">
+              <option value="失物招领">失物招领</option>
+              <option value="寻人启事">寻人启事</option>
+              <option value="修电脑">修电脑</option>
+              <option value="其它">其它</option>
+            </select>
+          </div>
+
+          <div class="col-lg-12">
+            <textarea name="title" id="weibo-title" rows="1" cols="30" class="form-control" placeholder="任务标题" autofocus></textarea>
+          </div>
+
+          <div class="col-lg-12">
+            <textarea name="content" id="weibo-content" rows="4" cols="40" class="form-control" placeholder="任务内容" autofocus></textarea>
+          </div>
+          <div class="col-lg-12">
+            任务消亡时间：
+            <input type="text" name="year" id="weibo-due-year" class="form-control" placeholder="年" autofocus></input>
+            <input type="text" name="month" id="weibo-due-month" class="form-control" placeholder="月" autofocus></input>
+            <input type="text" name="day" id="weibo-due-day" class="form-control" placeholder="日" autofocus></input>
+          </div>
+        </div>
+    </form>
+
+    
+
+    <div class="form-group">
+      <div class="">
+      <button form="text_form" "file_form" type="submit" class="btn btn-default">分享</button>
+      </div>
+    </div>
+
+    {% include "render_tasks.html" %}
+
+      </div>
+    </div>
+
+
+{% else %}
+
+    <div class="row">
+        <div class="col-md-6">
+
+          <h2>账号登陆</h2>
+
+          <div> <!-- The left panel, leave the right empty for future information-->
+
+          <form action="{{url_for('login')}}" method="POST" class="form-horizontal">
+            <div class="form-group">
+              <div class="col-lg-8">
+                  <input type="phone_number" class="form-control" name="phone_number" placeholder="手机号码" size="40">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-8">
+              <input type="password" class="form-control" name="password" placeholder="密码">
+              </div>
+            </div>
+
+              <div class="form-group">
+              <div class="col-lg-8">
+              <button type="submit" class="btn btn-default">登陆</button>
+              </div>
+            </div>
+            
+            
+          </form>
+
+
+          <div>
+          <p>没有账号？<a href="{{url_for('register')}}">前去注册</a></p>
+          </div>
+          </div>
+
+
+        </div>
+        <div class="col-md-6">
+          <h2>最新任务</h2>
+          {% include "render_tasks.html" %}
+        </div>
+    </div>
+
+
+{% endif %}
+
+{% endblock %}

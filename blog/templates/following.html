@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}
+	{{user[1]}}的关注 
+{% endblock %}
+
+{% block content %}
+	<h2  style="text-align:center">{{user[1]}}的关注列表</h2>
+	<div class="row">
+		<div class="col-md-4"></div>
+        <div class="col-md-4">
+			{% for f in followings %}
+				<div class="panel panel-default task">
+					<div class="panel-heading">
+						<span class="panel-body">
+							<a href="{{url_for('show_user', user_id=f[0])}}">
+							<img src="{{f[6]}}" alt="求真像" height=30 width=30 />{{f[1]}}</a> 
+							{%if session.user_id and f[0] != session.user_id%}
+							<span class="pull-right">
+								<a href="/unfollow/{{f[0]}}"><button type="button" class="btn btn-warning">取消关注</button></a>
+							</span>
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

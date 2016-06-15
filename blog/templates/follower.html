@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %} {{user[1]}}的粉丝 {% endblock %}
+
+{% block content %}
+<h2  style="text-align:center">{{user[1]}}的粉丝</h2>
+<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+{% for f in followers %}
+<div class="panel panel-default task">
+  <div class="panel-heading">
+    <span class="panel-body">
+    <a href="{{url_for('show_user', user_id=f[0])}}">
+        <img src="{{f[6]}}" alt="求真像" height=30 width=30 />
+        {{f[1]}}</a> 
+		{%if session.user_id and f[0] != session.user_id%}
+		<span class="pull-right">
+		    {% if f[8] == 1%}
+    <a href="/unfollow/{{f[0]}}"><button type="button" class="btn btn-warning">取消关注</button></a>
+    {% else %}
+    <a href="/follow/{{f[0]}}"><button type="button" class="btn btn-primary">关注</button></a>
+
+    {% endif %}</span>
+	 {% endif %}
+		</span>
+		</div></div>
+{% endfor %}</div></div>
+{% endblock %}

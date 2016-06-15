@@ -1,0 +1,8 @@
+*.pyc
+*.idea
+*.DS_Store
+instance/
+_site/
+virenv
+test_SQL.py
+blog/static/portraits

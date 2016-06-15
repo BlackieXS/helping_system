@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %} {{user_name}}的个人主页 {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+	{% if session.user_id and session.user_id != user_id%}
+	<div class="col-md-3"></div>
+	{%endif %}
+        <div class="col-md-6">
+
+<h1>
+	<img src="{{user_portrait_url}}" alt="求真像" height=50 width=50 />{{ user_name }}的个人主页 
+	{% if session.user_id and session.user_id != user_id%}
+		{% if is_following %}
+		<a href="/unfollow/{{user_id}}"><button type="button" class="btn btn-warning">取消关注</button></a>
+		{% else %}
+		<a href="/follow/{{user_id}}"><button type="button" class="btn btn-primary">关注</button></a>
+		{% endif %}
+	{% endif %}
+</h1>
+任务{{user_follower_count[0]}} 
+关注<a href="/followingList/{{user_id}}">{{user_following_count[1]}}</a> 
+粉丝 <a href="/followerList/{{user_id}}">{{user_follower_count[1]}}</a>
+寻求帮助者评分：{{score_as_helpee}}
+提供帮助者评分：{{score_as_helper}}
+
+{% if friends_2_hop and session.user_id and session.user_id == user_id and friends_2_hop.isExist != 0%}
+	<div class="panel panel-default task">
+		<div class="panel-heading">
+			<span class="panel-title">好友推荐</span></div> 
+				{% for f in friends_2_hop %}
+					{%if f.r == None and f.f['id'] != user_id %}
+						<div class="panel-body">
+						<p class="taskbody"><img src="{{f.f['portrait']}}" alt="求真像" height=50 width=50><a href="{{url_for('show_user', user_id=f.f['id'])}}">{{f.f['user_name']}}</a></p>
+						<span class="pull-right"><a href="/follow/{{f.f['id']}}"><button type="button" class="btn btn-primary">关注</button></a></p>
+						</div>
+					{% endif %}
+				{% endfor %}
+		</div>
+		{% endif %}
+    {% include "render_tasks.html" %}
+    </div>
+
+    <div class="col-md-2"></div>
+    <div class="col-md-4" style="margin-top: 20px;">
+        {% if session.user_id and session.user_id == user_id%}
+        <form action="{{url_for('change_portrait')}}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    修改头像:
+                    <input type="file" name="new_portrait" class="form-control" accept="file/gif, file/jpg" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <input type="submit" class="btn btn-default" value="上传" />
+                </div>
+            </div>
+        </form>
+    	{% endif %}
+    </div>
+ </div>
+
+ {% endblock %}
+

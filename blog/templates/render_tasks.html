@@ -1,0 +1,156 @@
+
+
+<div class="tasks">
+{% for task in tasks %}
+
+<div class="panel panel-default task">
+  <div class="panel-heading">
+    <span class="panel-title">
+    <a href="{{url_for('show_user', user_id=task[5])}}">
+        <img src="{{task[20]}}" alt="求真像" height=30 width=30 />
+        {{task[15]}}</a> 求助：{{task[1]}}</span>
+
+    <span class="pull-right task-small">
+        <div>发布时间：{{task[7]}}</div>
+        <div>截止时间：{{task[4]}}</div>
+    </span>
+
+  </div>
+  <div class="panel-body">
+    <p class="taskbody">
+
+    {{ render_post_content(task[3]) | safe }}
+
+    </p>
+
+    
+
+    <span class="pull-right">
+
+        
+        <!--a href="{{url_for('show_task', task_id=task[0])}}"><span class="task-small"> 评论({% if task.c %}{{task.c}}{% else %}0{% endif %})</span></a-->
+        
+        <span class="task-small" id="{{task[0]}}">
+
+        {% if session.user_id%}
+
+            {%if task[11] == "ADOPTED" %}
+
+            <a class="adopt" href="/adopt_task/{{task[0]}}" style="display:none"><span class="task-small">认领</span></a>
+    		<a class="unadopt" href="/unadopt_task/{{task[0]}}"><span class="highlight">取消认领</span></a> </span>
+
+            {% else %}
+
+            <a class="adopt" href="/adopt_task/{{task[0]}}"><span class="task-small">认领</span></a>
+            <a class="unadopt" href="/unadopt_task/{{task[0]}}" style="display:none"><span class="highlight">取消认领</span></a> </span>
+
+            {% endif %}
+        {% endif %}
+
+
+
+        <a href="{{url_for('show_task', task_id=task[0])}}"><span class="task-small"> 更多 </span></a>
+    </span>
+  </div>
+</div>
+
+
+{% endfor %}
+{% for task in adopted_tasks %}
+
+他认领过的任务:
+<div class="panel panel-default task">
+  <div class="panel-heading">
+    <span class="panel-title"><img src="{{task[20]}} " height=30 width=30 /><a href="{{url_for('show_user', user_id=task[5])}}">{{task[15]}}</a> 说: </span> 
+
+    <span class="pull-right task-small">{{task[7]}}</span>
+
+  </div>
+  <div class="panel-body">
+    <p class="taskbody">
+
+    {{ render_post_content(task[3]) | safe }}
+
+    </p>
+
+    
+
+    <span class="pull-right">
+
+        
+        <!--a href="{{url_for('show_task', task_id=task[0])}}"><span class="task-small"> 评论({% if task.c %}{{task.c}}{% else %}0{% endif %})</span></a-->
+        
+        <span class="task-small" id="{{task[0]}}">
+
+        {% if session.user_id%}
+
+            {%if task[11] == "ADOPTED" %}
+
+            <a class="adopt" href="/adopt_task/{{task[0]}}" style="display:none"><span class="task-small">认领</span></a>
+    		<a class="unadopt" href="/unadopt_task/{{task[0]}}"><span class="highlight">取消认领</span></a> </span>
+
+            {% else %}
+
+            <a class="adopt" href="/adopt_task/{{task[0]}}"><span class="task-small">认领</span></a>
+            <a class="unadopt" href="/unadopt_task/{{task[0]}}" style="display:none"><span class="highlight">取消认领</span></a> </span>
+
+            {% endif %}
+        {% endif %}
+
+
+
+        <a href="{{url_for('show_task', task_id=task[0])}}"><span class="task-small"> 更多 </span></a>
+    </span>
+  </div>
+</div>
+
+
+{% endfor %}
+</div>
+<script type="text/javascript">
+
+
+/*$(".adopt").click(function () {
+    task_id = $(this).parent().attr('id')
+    url = "/adopt_task/" + task_id
+
+    $.post(url, function(data) {
+        if (data.result){
+            $(".count-" + task_id).text(data.count)
+            toggle(task_id)
+        }
+    })
+
+    return false
+})
+
+
+$(".unadopt").click(function () {
+    task_id = $(this).parent().attr('id')
+    url = "/unadopt_task/" + task_id
+
+    $.post(url, function(data) {
+        if (data.result){
+            $(".count-" + task_id).text(data.count)
+            toggle(task_id)
+        }
+    })
+
+    return false
+})
+*/
+
+function toggle(task_id) {
+    var children = $("#" + task_id).children()
+    var c0 = children[0]
+    var c1 = children[1]
+    if ($(c0).css("display") == "none"){
+        $(c0).css("display", "inline")
+        $(c1).css("display", "none")
+    } else {
+        $(c0).css("display", "none")
+        $(c1).css("display", "inline")
+    }
+}
+
+</script>
