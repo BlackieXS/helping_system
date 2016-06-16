@@ -159,14 +159,14 @@ class User:
         SELECT *
         FROM User INNER JOIN (SELECT target_id, COUNT(*) AS FOLLOWING
                               FROM Follow
-                              WHERE source_id = %s OR source_id = %s
+                              WHERE source_id = %s
                               GROUP BY target_id) as F
         ON User.user_id = F.target_id
         ORDER BY user_name ASC LIMIT 25;
         """
         connection = mysql.connect()
         cursor = connection.cursor()
-        cursor.execute(query, (user_id, self_id))
+        cursor.execute(query, (user_id, ))
         following = cursor.fetchall()
         cursor.close()
         connection.close()

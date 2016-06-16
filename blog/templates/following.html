@@ -9,6 +9,7 @@
 		<div class="col-md-4"></div>
         <div class="col-md-4">
 			{% for f in followings %}
+			{% if f[8] != None %}
 				<div class="panel panel-default task">
 					<div class="panel-heading">
 						<span class="panel-body">
@@ -22,6 +23,7 @@
 						</span>
 					</div>
 				</div>
+			{% endif %}
 			{% endfor %}
 		</div>
 	</div>
