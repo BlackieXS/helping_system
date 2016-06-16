@@ -8,36 +8,20 @@
 	<div class="row">
 		<div class="col-md-4"></div>
         <div class="col-md-4">
-			{% for user in followers %}
-				<div class="panel panel-default task">
+			{% for f in all_users %}
+				<div class="panel panel-default post">
 					<div class="panel-heading">
 						<span class="panel-body">
-							<a href="{{url_for('show_user', user_id=user[0])}}">
-							<img src="{{user[6]}}" alt="求真像" height=30 width=30 />{{user[1]}}</a> 
-							{%if session.user_id and user[0] != session.user_id%}
+							<a href="{{url_for('show_user', user_id=f[0])}}">
+							<img src="{{f[6]}}" alt="求真像" height=30 width=30 />{{f[1]}}</a> 
+							{%if session.user_id and f[0] != session.user_id%}
 							<span class="pull-right">
-								{% if user[8] == 1%}
-									<a href="/unfollow/{{user[0]}}"><button type="button" class="btn btn-warning">取消关注</button></a>
-								{% else %}
-									<a href="/follow/{{user[0]}}"><button type="button" class="btn btn-primary">关注</button></a>
+								{% if f[8] == 1%}
+									<a href="/unfollow/{{f[0]}}"><button type="button" class="btn btn-warning">取消关注</button></a>
+									{% else %}
+									<a href="/follow/{{f[0]}}"><button type="button" class="btn btn-primary">关注</button></a>
 
 								{% endif %}
-							</span>
-							{% endif %}
-						</span>
-					</div>
-				</div>
-			{% endfor %}
-
-			{% for user in followings %}
-				<div class="panel panel-default task">
-					<div class="panel-heading">
-						<span class="panel-body">
-							<a href="{{url_for('show_user', user_id=user[0])}}">
-							<img src="{{user[6]}}" alt="求真像" height=30 width=30 />{{user[1]}}</a> 
-							{%if session.user_id and user[0] != session.user_id%}
-							<span class="pull-right">
-									<a href="/unfollow/{{user[0]}}"><button type="button" class="btn btn-warning">取消关注</button></a>
 							</span>
 							{% endif %}
 						</span>

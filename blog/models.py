@@ -83,11 +83,14 @@ class User:
     @classmethod
     def find_all_users(cls, user_id):
         query = """
-        SELECT User.user_id, User.user_name, User.portrait, COUNT(Follow.source_id)
-        FROM User RIGHT OUTER JOIN Follow
-        ON User.user_id = Follow.target_id
-        WHERE source_id = %s
-        ORDER BY user_name ASC LIMIT 25;
+        SELECT *
+        FROM User LEFT OUTER JOIN (SELECT F2.target_id, count(*)
+                                   FROM Follow as F1 INNER JOIN Follow as F2
+                                   ON F1.source_id = F2.target_id
+                                   WHERE F1.target_id = %s AND F2.source_id = F1.target_id
+                                   GROUP BY F2.target_id) as A
+        ON User.user_id = A.target_id
+        ORDER BY User.user_name ASC LIMIT 25
         """
         connection = mysql.connect()
         cursor = connection.cursor()
@@ -173,14 +176,17 @@ class User:
     def find_follower(cls, user_id, self_id):
         query = """
         SELECT *
-        FROM User INNER JOIN (SELECT *
-                              FROM Follow
-                              WHERE target_id = %s OR target_id = %s) as F
+        FROM User LEFT OUTER JOIN (SELECT F2.target_id, count(*)
+                                   FROM Follow as F1 INNER JOIN Follow as F2
+                                   ON F1.source_id = F2.target_id
+                                   WHERE F1.target_id = %s AND F2.source_id = F1.target_id
+                                   GROUP BY F2.target_id) as A
+        ON User.user_id = A.target_id
         ORDER BY User.user_name ASC LIMIT 25
         """
         connection = mysql.connect()
         cursor = connection.cursor()
-        cursor.execute(query, (user_id, self_id))
+        cursor.execute(query, (user_id, ))
         follower = cursor.fetchall()
         cursor.close()
         connection.close()
